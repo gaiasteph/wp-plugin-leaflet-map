@@ -75,7 +75,14 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
                     layer = L.ajaxGeoJson(src, {
                         type: '<?php echo $class::$type; ?>',
                         style : layerStyle,
-                        onEachFeature : onEachFeature
+                        onEachFeature : onEachFeature,
+                        /* function to add custom icons when defined in feature.properties */
+                        pointToLayer: function(feature, latlng) {
+                            return feature.properties.iconUrl ? new L.Marker(latlng, {icon: L.icon({
+                                iconUrl: feature.properties.iconUrl,
+                                iconSize: [25, 41], // size of the icon
+                            })}) : new L.Marker(latlng);
+                        }
                     }),
                     fitbounds = <?php echo $fitbounds; ?>,
                     popup_text = WPLeafletMapPlugin.unescape('<?php echo $popup_text; ?>'),
