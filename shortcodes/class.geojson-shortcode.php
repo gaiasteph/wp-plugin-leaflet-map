@@ -124,18 +124,20 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
                     legendVals[species] = iconUrl.slice(iconUrl.lastIndexOf("-")+1, iconUrl.length-4);
                 }
                 layer.on('ready', function () {
-                	  // add a legend for the icons
-                	  var legend = L.control({position: 'bottomright'});
-                	  legend.onAdd = function (previous_map) {
-                	  	   var div = L.DomUtil.create('div', 'info legend');
-                	  	   
-                	  	   // loop through our legend items and generate a label with a colored square for each species
-                	  	   for (var key in legendVals) {
-                	  	       div.innerHTML += '<i style="background: ' + legendVals[key] + '"></i>' + key + '<br>';
-                	  	   }
-                	  	   return div;
-                	  };
-                	  legend.addTo(previous_map);
+                    if('<?php echo $legend; ?>') {
+                        // add a legend for the icons
+                        var legend = L.control({position: 'bottomright'});
+                        legend.onAdd = function (previous_map) {
+                            var div = L.DomUtil.create('div', 'info legend');
+
+                           // loop through our legend items and generate a label with a colored square for each species
+                           for (var key in legendVals) {
+                               div.innerHTML += '<i style="background: ' + legendVals[key] + '"></i>' + key + '<br>';
+                           }
+                           return div;
+                       };
+                       legend.addTo(previous_map);
+                    }
                 });
             });
         </script>
